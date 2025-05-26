@@ -82,6 +82,8 @@
     :isOpen="showConfirm"
     @close="showConfirm = false"
     @confirm="handleConfirmDelete"
+    title="Hapus Produk"
+    message="Apakah Anda yakin ingin menghapus produk ini?"
   />
 </template>
 
@@ -89,14 +91,12 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useProductsStore } from "@/stores/products.store.js";
-import { useCategoriesStore } from "@/stores/categories.store.js";
 import { useCartStore } from "@/stores/cart.store.js";
 import { PlusIcon } from "@heroicons/vue/24/solid";
 import ConfirmDeleteModal from "@/utils/components/deleteModal.vue";
 
 // Store
 const ProductsStore = useProductsStore();
-const CategoriesStore = useCategoriesStore();
 const CartStore = useCartStore();
 
 // State
