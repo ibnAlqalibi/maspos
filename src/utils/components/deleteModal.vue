@@ -87,7 +87,7 @@ import {
 } from "@headlessui/vue";
 import { TrashIcon } from "@heroicons/vue/24/solid";
 
-const props = defineProps(["isOpen", "title", "message"]);
+defineProps(["isOpen", "title", "message"]);
 const emit = defineEmits(["close", "confirm"]);
 
 const close = () => emit("close");
