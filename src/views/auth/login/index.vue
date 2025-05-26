@@ -101,44 +101,38 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from "vue";
 import { useAuthStore } from "@/stores/auth.store.js";
 import router from "@/router/index.js";
 
-export default {
-  data() {
-    return {
-      authStore: useAuthStore(),
-      formData: {
-        email: "",
-        password: "",
-      },
-      errors: {
-        name: null,
-      },
-      showPassword: false,
-    };
-  },
-  methods: {
-    async login() {
-      try {
-        const response = await this.authStore.login(this.formData);
+const authStore = useAuthStore();
+const formData = ref({
+  email: "",
+  password: "",
+});
+const errors = ref({
+  name: null,
+});
+const showPassword = ref(false);
 
-        if (response.status !== 200) {
-          this.errors.name = "Email atau password salah.";
-        } else {
-          this.errors.name = null;
-          router.push("/");
-        }
-      } catch (error) {
-        this.errors.name = "Terjadi kesalahan saat login.";
-        console.error(error);
-      }
-    },
-    toggleShowPassword() {
-      this.showPassword = !this.showPassword;
-    },
-  },
+const login = async () => {
+  try {
+    const response = await authStore.login(formData.value);
+
+    if (response.status !== 200) {
+      errors.value.name = "Email atau password salah.";
+    } else {
+      errors.value.name = null;
+      router.push("/");
+    }
+  } catch (error) {
+    errors.value.name = "Terjadi kesalahan saat login.";
+    console.error(error);
+  }
+};
+const toggleShowPassword = () => {
+  showPassword.value = !showPassword.value;
 };
 </script>
 
