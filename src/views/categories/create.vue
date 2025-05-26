@@ -12,17 +12,15 @@
           >
           <input
             v-model="formData.name"
-            type="text"
-            id="name"
             :class="[
               'w-full px-3 py-2 border rounded-md bg-[#F5F5F5] focus:outline-none focus:ring-1 focus:ring-blue-500',
               errors.name ? 'border-red-500' : 'border-gray-800',
             ]"
-            placeholder="Produk"
+            placeholder="Nama Kategori"
           />
-          <span v-if="errors.name" class="text-red-500 text-sm">{{
-            errors.name
-          }}</span>
+          <span v-if="errors.name" class="text-red-500 text-sm">
+            {{ errors.name }}
+          </span>
         </div>
 
         <div class="flex space-x-4 border-t border-gray-200 p-[24px]">
@@ -45,68 +43,73 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, computed, onMounted } from "vue";
 import { useCategoriesStore } from "@/stores/categories.store.js";
 import { toast } from "vue3-toastify";
 
-export default {
-  data() {
-    return {
-      categoriesStore: useCategoriesStore(),
-      formData: {
-        name: null,
-      },
-      errors: {
-        name: null,
-      },
-    };
-  },
-  mounted() {
-    this.categoriesStore.fetch();
-  },
-  computed: {
-    isNameDuplicate() {
-      return this.categoriesStore.categories.some(
-        (category) => category.name === this.formData.name
-      );
-    },
-  },
-  methods: {
-    async create() {
-      this.errors.name = null;
+// Store dan Router
+const categoriesStore = useCategoriesStore();
 
-      if (!this.formData.name) {
-        this.errors.name = "Nama Kategori Wajib Diisi.";
-        return;
-      }
+// Data Form & Error
+const resetForm = () => {
+  formData.value.name = null;
+  errors.value.name = null;
+};
 
-      if (this.isNameDuplicate) {
-        this.errors.name = "Nama Kategori Sudah ada.";
-        toast("Nama Kategori Sudah ada.", {
-          autoClose: 2000,
-          type: "error",
-          position: toast.POSITION.TOP_RIGHT,
-        });
-        return;
-      }
+const formData = ref({
+  name: null,
+});
+const errors = ref({
+  name: null,
+});
 
-      let cat = await this.categoriesStore.add(this.formData);
-      if (cat) {
-        this.formData.name = null;
-        toast("Kategori Berhasil Ditambahkan", {
-          autoClose: 2000,
-          type: "success",
-          position: toast.POSITION.TOP_RIGHT,
-        });
-      } else {
-        this.errors.name = "Gagal menambahkan kategori.";
-        toast("Gagal menambahkan kategori.", {
-          autoClose: 2000,
-          type: "error",
-          position: toast.POSITION.TOP_RIGHT,
-        });
-      }
-    },
-  },
+// Ambil data kategori saat mount
+onMounted(() => {
+  categoriesStore.fetch();
+});
+
+// Cek duplikat nama kategori
+const isNameDuplicate = computed(() => {
+  return categoriesStore.categories.some(
+    (cat) => cat.name?.toLowerCase() === formData.value.name?.toLowerCase()
+  );
+});
+
+// Fungsi submit
+const create = async () => {
+  errors.value.name = null;
+
+  if (!formData.value.name) {
+    errors.value.name = "Nama Kategori Wajib Diisi.";
+    return;
+  }
+
+  if (isNameDuplicate.value) {
+    errors.value.name = "Nama Kategori Sudah ada.";
+    toast("Nama Kategori Sudah ada.", {
+      autoClose: 2000,
+      type: "error",
+      position: toast.POSITION.TOP_RIGHT,
+    });
+    return;
+  }
+
+  const success = await categoriesStore.add(formData.value);
+  if (success) {
+    toast("Kategori Berhasil Ditambahkan", {
+      autoClose: 2000,
+      type: "success",
+      position: toast.POSITION.TOP_RIGHT,
+    });
+    resetForm();
+  } else {
+    errors.value.name = "Gagal menambahkan kategori.";
+    toast("Gagal menambahkan kategori.", {
+      autoClose: 2000,
+      type: "error",
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  }
 };
 </script>
