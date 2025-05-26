@@ -1,4 +1,4 @@
-import CategoryCreateView from "@/views/category/create.vue";
+import CategoryCreateView from "@/views/categories/create.vue";
 import ProductsView from "@/views/products/index.vue";
 import CartView from "@/views/cart/index.vue";
 import ProductsCreateView from "@/views/products/create.vue";

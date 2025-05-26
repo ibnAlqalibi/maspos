@@ -46,10 +46,10 @@
                   </div>
                 </div>
                 <h3 class="regular text-[16px] font-[700] text-gray-900 mt-4">
-                  Hapus Produk
+                  {{ title }}
                 </h3>
                 <p class="regular text-[16px] text-gray-500 mt-2">
-                  Apakah Anda yakin ingin menghapus produk ini?
+                  {{ message }}
                 </p>
                 <div
                   class="mt-6 flex justify-center gap-[24px] border-t border-px border-[#D6D6D6] pt-4"
@@ -85,10 +85,9 @@ import {
   TransitionChild,
   TransitionRoot,
 } from "@headlessui/vue";
-import { ref } from "vue";
 import { TrashIcon } from "@heroicons/vue/24/solid";
 
-const props = defineProps(["isOpen"]);
+const props = defineProps(["isOpen", "title", "message"]);
 const emit = defineEmits(["close", "confirm"]);
 
 const close = () => emit("close");
