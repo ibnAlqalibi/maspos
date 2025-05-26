@@ -4,10 +4,14 @@ import "vue3-toastify/dist/index.css";
 import "sweetalert2/dist/sweetalert2.min.css";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircle,
+  faAngleRight,
+  faAngleLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add(faCircle);
+library.add(faCircle, faAngleRight, faAngleLeft);
 
 import moment from "moment";
 import VueSweetalert2 from "vue-sweetalert2";
