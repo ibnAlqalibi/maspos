@@ -1,7 +1,6 @@
 <template>
   <!-- Bottom Section -->
   <div class="hidden md:flex items-center space-x-4 mb-3">
-    <!-- Search Bar -->
     <div class="relative">
       <input
         v-model="ProductsStore.search"
@@ -33,38 +32,22 @@
       </svg>
     </button>
 
-    <!-- Categories -->
     <div
       ref="categoriesContainer"
       class="flex space-x-[16px] overflow-x-auto categories-scroll"
     >
-      <button
-        :key="'semua'"
+      <CategoryButton
+        name="Semua"
+        :isActive="activeCategory === null"
         @click="setActiveCategory(null)"
-        :class="
-          activeCategory === null
-            ? 'bg-[#2C59E5] text-white'
-            : 'text-[#2C59E5] bg-blue-50'
-        "
-        class="px-[16px] h-[32px] rounded-lg text-sm whitespace-nowrap"
-      >
-        Semua
-      </button>
-
-      <!-- Tombol Kategori -->
-      <button
+      />
+      <CategoryButton
         v-for="category in CategoriesStore.categories"
         :key="category.id"
+        :name="category.name"
+        :isActive="activeCategory === category.id"
         @click="setActiveCategory(category.id)"
-        :class="
-          activeCategory === category.id
-            ? 'bg-[#2C59E5] text-white'
-            : 'text-[#2C59E5] bg-blue-50'
-        "
-        class="px-[16px] h-[32px] rounded-lg text-sm whitespace-nowrap"
-      >
-        {{ category.name }}
-      </button>
+      />
     </div>
 
     <button
@@ -86,7 +69,7 @@
     </button>
   </div>
 
-  <!-- Mobile menu -->
+  <!-- Mobile -->
   <div class="md:hidden">
     <div class="px-2 pt-2 pb-3 space-y-1">
       <input
@@ -98,7 +81,6 @@
       />
       <div class="flex overflow-x-auto space-x-2 pb-2">
         <button
-          :key="'semua'"
           @click="setActiveCategory(null)"
           :class="
             activeCategory === null
@@ -127,96 +109,75 @@
   </div>
 </template>
 
-<script>
-import { ref, watch } from "vue";
-import { useCategoriesStore } from "@/stores/categories.store.js";
-import { useProductsStore } from "@/stores/products.store.js";
+<script setup>
+import { ref, onMounted, watch, nextTick } from "vue";
+import { useCategoriesStore } from "@/stores/categories.store";
+import { useProductsStore } from "@/stores/products.store";
 import { MagnifyingGlassIcon } from "@heroicons/vue/24/outline";
+import CategoryButton from "@/utils/components/categoryButton.vue";
 
-export default {
-  components: {
-    MagnifyingGlassIcon,
-  },
-  data() {
-    return {
-      CategoriesStore: useCategoriesStore(),
-      ProductsStore: useProductsStore(),
-      categoriesContainer: null,
-      activeCategory: null,
-    };
-  },
-  mounted() {
-    this.CategoriesStore.fetch();
-    this.categoriesContainer = document.querySelector(".categories-scroll");
+const CategoriesStore = useCategoriesStore();
+const ProductsStore = useProductsStore();
+const categoriesContainer = ref(null);
+const activeCategory = ref(null);
 
-    if (!this.categoriesContainer) {
-      console.error("categoriesContainer element not found in the DOM");
-    }
-
-    this.setActiveCategory(this.CategoriesStore.category_id);
-
-    this.ProductsStore.fetch().then(() => {
-      this.filterProducts();
-    });
-
-    // Watcher menggunakan $watch
-    this.$watch(
-      () => this.CategoriesStore.category_id,
-      () => {
-        this.filterProducts();
-      }
-    );
-  },
-  methods: {
-    setActiveCategory(id) {
-      this.activeCategory = id;
-      this.CategoriesStore.setCategoryId(id);
-    },
-    filterProducts() {
-      this.ProductsStore.filteredProducts = this.ProductsStore.products.filter(
-        (prod) => {
-          const matchesCategory =
-            !this.CategoriesStore.category_id ||
-            prod.category_id === this.CategoriesStore.category_id;
-          const matchesSearch = prod.name
-            .toLowerCase()
-            .includes(this.ProductsStore.search.toLowerCase());
-          return matchesCategory && matchesSearch;
-        }
-      );
-    },
-    scrollLeft() {
-      if (this.categoriesContainer) {
-        this.categoriesContainer.scrollBy({
-          left: -200,
-          behavior: "smooth",
-        });
-      } else {
-        console.warn("categoriesContainer is null");
-      }
-    },
-    scrollRight() {
-      if (this.categoriesContainer) {
-        this.categoriesContainer.scrollBy({
-          left: 200,
-          behavior: "smooth",
-        });
-      } else {
-        console.warn("categoriesContainer is null");
-      }
-    },
-  },
+const setActiveCategory = (id) => {
+  activeCategory.value = id;
+  CategoriesStore.setCategoryId(id);
 };
+
+const filterProducts = () => {
+  ProductsStore.filteredProducts = ProductsStore.products.filter((prod) => {
+    const matchesCategory =
+      !CategoriesStore.category_id ||
+      prod.category_id === CategoriesStore.category_id;
+    const matchesSearch = prod.name
+      .toLowerCase()
+      .includes(ProductsStore.search.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+};
+
+const scrollLeft = () => {
+  if (categoriesContainer.value) {
+    categoriesContainer.value.scrollBy({ left: -200, behavior: "smooth" });
+  }
+};
+
+const scrollRight = () => {
+  if (categoriesContainer.value) {
+    categoriesContainer.value.scrollBy({ left: 200, behavior: "smooth" });
+  }
+};
+
+onMounted(async () => {
+  await CategoriesStore.fetch();
+  setActiveCategory(CategoriesStore.category_id);
+
+  await ProductsStore.fetch();
+  filterProducts();
+
+  await nextTick();
+  if (!categoriesContainer.value) {
+    console.warn("categoriesContainer is not yet available in the DOM");
+  }
+});
+
+watch(
+  () => CategoriesStore.category_id,
+  () => {
+    filterProducts();
+  }
+);
 </script>
 
 <style scoped>
 .categories-scroll {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   scroll-behavior: smooth;
 }
-
 .categories-scroll::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
 }
 </style>
