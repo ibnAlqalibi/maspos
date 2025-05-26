@@ -114,7 +114,7 @@ import { ref, onMounted, watch } from "vue";
 import { useCategoriesStore } from "@/stores/categories.store";
 import { useProductsStore } from "@/stores/products.store";
 import { MagnifyingGlassIcon } from "@heroicons/vue/24/outline";
-import CategoryButton from "@/utils/components/categoryButton.vue";
+import CategoryButton from "@/utils/components/buttons/categoryButton.vue";
 
 const CategoriesStore = useCategoriesStore();
 const ProductsStore = useProductsStore();
