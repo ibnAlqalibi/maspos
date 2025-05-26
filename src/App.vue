@@ -9,8 +9,7 @@
 <script setup>
 import { computed } from "vue";
 import { useRoute } from "vue-router";
-import DefaultLayout from "./layouts/DefaultLayout.vue";
 
 const route = useRoute();
-const layout = computed(() => route.meta.layout || DefaultLayout);
+const layout = computed(() => route.meta.layout);
 </script>
