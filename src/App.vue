@@ -6,14 +6,11 @@
   </div>
 </template>
 
-<script>
-import DefaultLayout from './layouts/DefaultLayout.vue';
-export default {
-  name: 'App',
-  computed: {
-    layout() {
-      return this.$route.meta.layout || DefaultLayout;
-    },
-  },
-};
+<script setup>
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+import DefaultLayout from "./layouts/DefaultLayout.vue";
+
+const route = useRoute();
+const layout = computed(() => route.meta.layout || DefaultLayout);
 </script>
