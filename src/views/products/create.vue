@@ -155,150 +155,117 @@
   </div>
 </template>
 
-<script>
-import { ref, onMounted } from "vue";
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 import { useProductsStore } from "@/stores/products.store.js";
 import { useCategoriesStore } from "@/stores/categories.store.js";
 
-export default {
-  setup() {
-    // Store
-    const productsStore = useProductsStore();
-    const categoriesStore = useCategoriesStore();
-    const router = useRouter();
+const productsStore = useProductsStore();
+const categoriesStore = useCategoriesStore();
+const router = useRouter();
 
-    // Data reaktif
-    const formData = ref({
-      category_id: "",
-      name: "",
-      price: null,
-      picture: null, // Untuk menyimpan file gambar
-    });
+const formData = ref({
+  category_id: "",
+  name: "",
+  price: null,
+  picture: null,
+});
 
-    const imagePreview = ref(null); // Untuk pratinjau gambar
-    const fileInput = ref(null); // Referensi ke elemen input file
-    const isDragging = ref(false);
-    const errors = ref({}); // Untuk menyimpan pesan kesalahan
+const imagePreview = ref(null);
+const fileInput = ref(null);
+const isDragging = ref(false);
+const errors = ref({});
 
-    // Fetch data kategori saat komponen dimount
-    onMounted(() => {
-      categoriesStore.fetch();
-    });
+let previewUrl = null;
 
-    // Fungsi untuk membuat produk
-    const create = async () => {
-      if (!validate()) return;
+onMounted(() => {
+  categoriesStore.fetch();
+});
 
-      const form = new FormData();
+onBeforeUnmount(() => {
+  if (previewUrl) {
+    URL.revokeObjectURL(previewUrl);
+  }
+});
 
-      // Menambahkan data ke FormData
-      form.append("category_id", formData.value.category_id);
-      form.append("name", formData.value.name);
-      form.append("price", formData.value.price);
+const create = async () => {
+  if (!validate()) return;
 
-      // Menambahkan gambar jika ada
-      if (formData.value.picture) {
-        form.append("picture", formData.value.picture);
-      }
+  const form = new FormData();
+  form.append("category_id", formData.value.category_id);
+  form.append("name", formData.value.name);
+  form.append("price", formData.value.price);
 
-      // Mengirim data ke store
-      const result = await productsStore.add(form);
+  if (formData.value.picture) {
+    form.append("picture", formData.value.picture);
+  }
 
-      if (result) {
-        // Redirect setelah berhasil
-        router.push("/");
-      }
-    };
+  const result = await productsStore.add(form);
+  if (result) {
+    router.push("/");
+  }
+};
 
-    // Fungsi untuk menangani perubahan file gambar
-    const handleFileUpload = (event) => {
-      const file = event.target.files[0];
-      if (file) {
-        if (file.type === "image/jpeg" || file.type === "image/png") {
-          processFile(file);
-        } else {
-          errors.value.picture = "Format file harus jpg atau png";
-        }
-      }
-    };
+const handleFileUpload = (event) => {
+  const file = event.target.files[0];
+  validateAndProcessFile(file);
+};
 
-    // Drag and Drop Event Handlers
-    const onDragOver = (event) => {
-      isDragging.value = true; // Menandai bahwa elemen sedang di-drag
-    };
+const onDragOver = () => {
+  isDragging.value = true;
+};
 
-    const onDragLeave = () => {
-      isDragging.value = false; // Menghapus tanda drag jika pointer keluar
-    };
+const onDragLeave = () => {
+  isDragging.value = false;
+};
 
-    const onDrop = (event) => {
-      event.preventDefault(); // Mencegah perilaku default browser
-      isDragging.value = false; // Menghapus tanda drag
-      const file = event.dataTransfer.files[0]; // Mendapatkan file dari drag and drop
-      if (file) {
-        if (file.type === "image/jpeg" || file.type === "image/png") {
-          processFile(file); // Memproses file
-        } else {
-          errors.value.picture = "Format file harus jpg atau png";
-        }
-      }
-    };
+const onDrop = (event) => {
+  event.preventDefault();
+  isDragging.value = false;
+  const file = event.dataTransfer.files[0];
+  validateAndProcessFile(file);
+};
 
-    const processFile = (file) => {
-      formData.value.picture = file; // Menyimpan file ke formData.picture
-      imagePreview.value = URL.createObjectURL(file); // Menampilkan pratinjau
-      errors.value.picture = null; // Menghapus pesan kesalahan jika ada
-    };
+const validateAndProcessFile = (file) => {
+  if (file && ["image/jpeg", "image/png"].includes(file.type)) {
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+    formData.value.picture = file;
+    previewUrl = URL.createObjectURL(file);
+    imagePreview.value = previewUrl;
+    errors.value.picture = null;
+  } else {
+    errors.value.picture = "Format file harus jpg atau png";
+  }
+};
 
-    // Fungsi untuk men-trigger klik pada input file
-    const triggerFileInput = () => {
-      if (fileInput.value) {
-        fileInput.value.click();
-      }
-    };
+const triggerFileInput = () => {
+  fileInput.value?.click();
+};
 
-    // Fungsi untuk validasi input
-    const validate = () => {
-      errors.value = {};
+const validate = () => {
+  errors.value = {};
 
-      if (!formData.value.name) {
-        errors.value.name = "Nama produk wajib diisi";
-      }
+  if (!formData.value.name) {
+    errors.value.name = "Nama produk wajib diisi";
+  }
 
-      if (!formData.value.price) {
-        errors.value.price = "Harga produk wajib diisi";
-      } else if (formData.value.price < 1) {
-        errors.value.price = "Harga produk minimal 1";
-      }
+  if (!formData.value.price) {
+    errors.value.price = "Harga produk wajib diisi";
+  } else if (formData.value.price < 1) {
+    errors.value.price = "Harga produk minimal 1";
+  }
 
-      if (!formData.value.category_id) {
-        errors.value.category_id = "Kategori produk wajib dipilih";
-      }
+  if (!formData.value.category_id) {
+    errors.value.category_id = "Kategori produk wajib dipilih";
+  }
 
-      if (!formData.value.picture) {
-        errors.value.picture = "Gambar produk wajib diunggah";
-      }
+  if (!formData.value.picture) {
+    errors.value.picture = "Gambar produk wajib diunggah";
+  }
 
-      return Object.keys(errors.value).length === 0;
-    };
-
-    // Kembalikan properti dan metode ke template
-    return {
-      productsStore,
-      categoriesStore,
-      formData,
-      imagePreview,
-      fileInput,
-      create,
-      handleFileUpload,
-      triggerFileInput,
-      onDragOver,
-      onDragLeave,
-      onDrop,
-      router,
-      errors,
-    };
-  },
+  return Object.keys(errors.value).length === 0;
 };
 </script>
