@@ -7,36 +7,21 @@
 
       <form action="" @submit.prevent="create">
         <div class="p-[24px]">
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >Nama Kategori</label
-          >
-          <input
-            v-model="formData.name"
-            :class="[
-              'w-full px-3 py-2 border rounded-md bg-[#F5F5F5] focus:outline-none focus:ring-1 focus:ring-blue-500',
-              errors.name ? 'border-red-500' : 'border-gray-800',
-            ]"
-            placeholder="Nama Kategori"
+          <TextInput
+            :formData="formData"
+            :errors="errors"
+            label="Nama Kategori"
+            placeholder="Masukkan nama kategori"
           />
-          <span v-if="errors.name" class="text-red-500 text-sm">
-            {{ errors.name }}
-          </span>
         </div>
 
         <div class="flex space-x-4 border-t border-gray-200 p-[24px]">
-          <button
+          <OutlinedPrimaryButton
             type="button"
             @click="$router.push('/')"
-            class="flex-1 px-4 py-2 text-blue-600 bg-white border border-blue-600 rounded-md hover:bg-blue-50 focus:outline-none"
-          >
-            Batal
-          </button>
-          <button
-            type="submit"
-            class="flex-1 px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none"
-          >
-            Tambah
-          </button>
+            label="Batal"
+          />
+          <PrimaryButton type="submit" label="Tambah" />
         </div>
       </form>
     </div>
@@ -47,6 +32,9 @@
 import { ref, computed, onMounted } from "vue";
 import { useCategoriesStore } from "@/stores/categories.store.js";
 import { toast } from "vue3-toastify";
+import TextInput from "@/utils/components/inputs/textInput.vue";
+import OutlinedPrimaryButton from "@/utils/components/buttons/outlinedPrimaryButton.vue";
+import PrimaryButton from "@/utils/components/buttons/primaryButton.vue";
 
 // Store dan Router
 const categoriesStore = useCategoriesStore();
