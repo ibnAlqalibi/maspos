@@ -1,6 +1,6 @@
 <template>
   <button
-    class="regular w-full h-[39px] mt-1.5 sm:mt-[12px] sm:mb-[8px] bg-[#2C59E5] text-[#F5F5F5] px-2 sm:px-3 rounded-[8px] flex items-center justify-center gap-1"
+    class="regular h-[39px] mt-1.5 sm:mt-[12px] sm:mb-[8px] bg-[#2C59E5] text-[#F5F5F5] px-2 sm:px-3 rounded-[8px] flex items-center justify-center gap-1"
     @click="$emit('click')"
     :type="type"
   >
