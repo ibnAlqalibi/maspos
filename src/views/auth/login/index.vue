@@ -50,10 +50,10 @@
 import { ref } from "vue";
 import { useAuthStore } from "@/stores/auth.store.js";
 import router from "@/router/index.js";
-import PrimaryButton from "@/utils/components/buttons/primaryButton.vue";
-import PasswordInput from "@/utils/components/inputs/PasswordInput.vue";
-import EmailInput from "@/utils/components/inputs/EmailInput.vue";
-import Jumbotron from "@/utils/components/Jumbotron.vue";
+import PrimaryButton from "@/components/buttons/primaryButton.vue";
+import PasswordInput from "@/components/inputs/PasswordInput.vue";
+import EmailInput from "@/components/inputs/EmailInput.vue";
+import Jumbotron from "@/components/Jumbotron.vue";
 
 const authStore = useAuthStore();
 const formData = ref({

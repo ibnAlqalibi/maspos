@@ -116,7 +116,7 @@ import { useAuthStore } from "@/stores/auth.store.js";
 import CatComponent from "@/views/categories/index.vue";
 import { ShoppingCartIcon } from "@heroicons/vue/24/outline";
 import logo from "@/assets/pfp.jpg";
-import AddButton from "@/utils/components/buttons/addButton.vue";
+import AddButton from "@/components/buttons/addButton.vue";
 
 // Routing
 const router = useRouter();

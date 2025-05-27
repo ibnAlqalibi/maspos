@@ -60,10 +60,10 @@
 import { ref } from "vue";
 import { useProductsStore } from "@/stores/products.store.js";
 import { useCartStore } from "@/stores/cart.store.js";
-import ConfirmDeleteModal from "@/utils/components/deleteModal.vue";
-import DeleteButton from "@/utils/components/buttons/deleteButton.vue";
-import AddButton from "@/utils/components/buttons/addButton.vue";
-import QtyCounter from "@/utils/components/qtyCounter.vue";
+import ConfirmDeleteModal from "@/components/deleteModal.vue";
+import DeleteButton from "@/components/buttons/deleteButton.vue";
+import AddButton from "@/components/buttons/addButton.vue";
+import QtyCounter from "@/components/qtyCounter.vue";
 
 // Store
 const ProductsStore = useProductsStore();
