@@ -46,19 +46,12 @@
           </div>
         </div>
         <div class="flex space-x-4 p-[24px] border-t border-px border-gray-200">
-          <button
+          <OutlinedPrimaryButton
             type="button"
             @click="$router.push('/')"
-            class="regular flex-1 px-4 py-2 text-blue-600 bg-white border border-blue-600 rounded-md hover:bg-blue-50 focus:outline-none"
-          >
-            Batal
-          </button>
-          <button
-            type="submit"
-            class="regular flex-1 px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none"
-          >
-            Tambah
-          </button>
+            label="Batal"
+          />
+          <PrimaryButton type="submit" label="Tambah" />
         </div>
       </form>
     </div>
@@ -74,6 +67,8 @@ import ImageUpload from "@/utils/components/inputs/imageUpload.vue";
 import TextInput from "@/utils/components/inputs/textInput.vue";
 import NumberInput from "@/utils/components/inputs/numberInput.vue";
 import Select from "@/utils/components/inputs/select.vue";
+import OutlinedPrimaryButton from "@/utils/components/buttons/outlinedPrimaryButton.vue";
+import PrimaryButton from "@/utils/components/buttons/primaryButton.vue";
 
 const productsStore = useProductsStore();
 const categoriesStore = useCategoriesStore();

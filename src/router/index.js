@@ -1,8 +1,8 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import middlewarePipeline from '@/middleware/middlewarePipeline.js';
+import { createRouter, createWebHistory } from "vue-router";
+import middlewarePipeline from "@/middleware/middlewarePipeline.js";
 
-import main from './main';
-import auth from './auth';
+import main from "./main";
+import auth from "./auth";
 
 const arr_routes = [main, auth];
 
@@ -14,10 +14,10 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  document.title = ''
+  document.title = "";
 
-  if(to.meta.title){
-    document.title = to.meta.title + ' · Vue 3';
+  if (to.meta.title) {
+    document.title = to.meta.title + " · MASPOS";
   }
 
   if (!to.meta.middleware) {
@@ -41,4 +41,3 @@ router.beforeEach((to, from, next) => {
 });
 
 export default router;
-
