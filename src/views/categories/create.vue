@@ -32,9 +32,9 @@
 import { ref, computed, onMounted } from "vue";
 import { useCategoriesStore } from "@/stores/categories.store.js";
 import { toast } from "vue3-toastify";
-import TextInput from "@/utils/components/inputs/textInput.vue";
-import OutlinedPrimaryButton from "@/utils/components/buttons/outlinedPrimaryButton.vue";
-import PrimaryButton from "@/utils/components/buttons/primaryButton.vue";
+import TextInput from "@/components/inputs/textInput.vue";
+import OutlinedPrimaryButton from "@/components/buttons/outlinedPrimaryButton.vue";
+import PrimaryButton from "@/components/buttons/primaryButton.vue";
 
 // Store dan Router
 const categoriesStore = useCategoriesStore();

@@ -63,12 +63,12 @@ import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useProductsStore } from "@/stores/products.store.js";
 import { useCategoriesStore } from "@/stores/categories.store.js";
-import ImageUpload from "@/utils/components/inputs/imageUpload.vue";
-import TextInput from "@/utils/components/inputs/textInput.vue";
-import NumberInput from "@/utils/components/inputs/numberInput.vue";
-import Select from "@/utils/components/inputs/select.vue";
-import OutlinedPrimaryButton from "@/utils/components/buttons/outlinedPrimaryButton.vue";
-import PrimaryButton from "@/utils/components/buttons/primaryButton.vue";
+import ImageUpload from "@/components/inputs/imageUpload.vue";
+import TextInput from "@/components/inputs/textInput.vue";
+import NumberInput from "@/components/inputs/numberInput.vue";
+import Select from "@/components/inputs/select.vue";
+import OutlinedPrimaryButton from "@/components/buttons/outlinedPrimaryButton.vue";
+import PrimaryButton from "@/components/buttons/primaryButton.vue";
 
 const productsStore = useProductsStore();
 const categoriesStore = useCategoriesStore();

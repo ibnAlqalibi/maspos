@@ -88,12 +88,12 @@
 <script setup>
 import { ref } from "vue";
 import { useCartStore } from "@/stores/cart.store.js";
-import { formatRupiah } from "@/utils/formatRupiah";
-import ConfirmDeleteModal from "@/utils/components/deleteModal.vue";
+import { formatRupiah } from "@/helper/formatRupiah";
+import ConfirmDeleteModal from "@/components/deleteModal.vue";
 import Swal from "sweetalert2";
-import QtyCounter from "@/utils/components/qtyCounter.vue";
-import OutlinedPrimaryButton from "@/utils/components/buttons/outlinedPrimaryButton.vue";
-import PrimaryButton from "@/utils/components/buttons/primaryButton.vue";
+import QtyCounter from "@/components/qtyCounter.vue";
+import OutlinedPrimaryButton from "@/components/buttons/outlinedPrimaryButton.vue";
+import PrimaryButton from "@/components/buttons/primaryButton.vue";
 
 // Stores & Router
 const CartStore = useCartStore();
