@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center gap-[16px] mt-1.5 sm:mt-2">
+  <div class="flex items-center justify-between mt-1.5 sm:mt-2">
     <button
       class="bg-[#E8E8E8] rounded-[4px] w-[24px] h-[24px] flex items-center justify-center"
       @click="onDecrease"

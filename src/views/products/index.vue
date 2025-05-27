@@ -29,32 +29,18 @@
             Rp {{ product.price.toLocaleString() }}
           </p>
 
-          <button
+          <AddButton
             v-if="!CartStore.cart.find((cart) => cart.id === product.id)"
-            class="regular w-full h-[39px] mt-1.5 sm:mt-[12px] sm:mb-[8px] bg-[#2C59E5] text-[#F5F5F5] px-2 sm:px-3 rounded-[8px] flex items-center justify-center gap-1"
             @click="addToCart(product)"
-          >
-            <PlusIcon class="w-[16px] h-[16px] text-white" />
-            <span class="text-[16px]">Keranjang</span>
-          </button>
+            label="Keranjang"
+          />
 
-          <div v-else class="flex items-center justify-between mt-1.5 sm:mt-2">
-            <button
-              class="bg-gray-200 text-gray-800 py-1 sm:py-1.5 px-2 sm:px-3 rounded-lg text-xs sm:text-sm"
-              @click="CartStore.updateQty(product.id, 'decrement')"
-            >
-              -
-            </button>
-            <span class="text-xs sm:text-sm">
-              {{ CartStore.cart.find((cart) => cart.id === product.id).qty }}
-            </span>
-            <button
-              class="bg-gray-200 text-gray-800 py-1 sm:py-1.5 px-2 sm:px-3 rounded-lg text-xs sm:text-sm"
-              @click="CartStore.updateQty(product.id, 'increment')"
-            >
-              +
-            </button>
-          </div>
+          <QtyCounter
+            v-else
+            v-model="CartStore.cart.find((cart) => cart.id === product.id).qty"
+            @decrease="CartStore.updateQty(product.id, 'decrement')"
+            @increase="CartStore.updateQty(product.id, 'increment')"
+          />
         </div>
       </div>
     </div>
@@ -71,12 +57,12 @@
 
 <script setup>
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import { useProductsStore } from "@/stores/products.store.js";
 import { useCartStore } from "@/stores/cart.store.js";
-import { PlusIcon } from "@heroicons/vue/24/solid";
 import ConfirmDeleteModal from "@/utils/components/deleteModal.vue";
 import DeleteButton from "@/utils/components/buttons/deleteButton.vue";
+import AddButton from "@/utils/components/buttons/addButton.vue";
+import QtyCounter from "@/utils/components/qtyCounter.vue";
 
 // Store
 const ProductsStore = useProductsStore();
@@ -85,7 +71,6 @@ const CartStore = useCartStore();
 // State
 const showConfirm = ref(false);
 const deleteId = ref(null);
-const router = useRouter();
 
 // Methods
 function addToCart(prod) {
