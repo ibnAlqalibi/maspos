@@ -2,6 +2,7 @@ import LoginView from "@/views/auth/login/index.vue";
 
 // middleware
 import GuestMiddleware from "@/middleware/guest.middleware.js";
+import AuthLayout from "@/layouts/AuthLayout.vue";
 
 export default [
   {
@@ -10,6 +11,7 @@ export default [
     component: LoginView,
     meta: {
       title: "Login",
+      layout: AuthLayout,
       middleware: [GuestMiddleware],
     },
   },
