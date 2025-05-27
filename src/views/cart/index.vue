@@ -28,23 +28,11 @@
               {{ formatRupiah(prod.price) }}
             </td>
             <td class="px-6 py-4 text-[20px] text-gray-900">
-              <div class="flex items-center gap-[16px] mt-1.5 sm:mt-2">
-                <button
-                  class="bg-[#E8E8E8] rounded-[4px] w-[24px] h-[24px] flex items-center justify-center"
-                  @click="handleDecrease(prod.id, prod.qty)"
-                >
-                  <MinusIcon class="w-[14px] h-[14px] text-[#0F0F0F]" />
-                </button>
-                <span class="regular text-[20px] font-[500]">
-                  {{ prod.qty }}
-                </span>
-                <button
-                  class="bg-[#E8E8E8] rounded-[4px] w-[24px] h-[24px] flex items-center justify-center"
-                  @click="CartStore.updateQty(prod.id, 'increment')"
-                >
-                  <PlusIcon class="w-[14px] h-[14px] text-[#0F0F0F]" />
-                </button>
-              </div>
+              <QtyCounter
+                v-model="prod.qty"
+                @decrease="handleDecrease(prod.id, prod.qty)"
+                @increase="CartStore.updateQty(prod.id, 'increment')"
+              />
             </td>
             <td class="regular px-6 py-4 text-[20px] font-[700] text-gray-900">
               {{ formatRupiah(prod.subtotal) }}
@@ -67,20 +55,20 @@
         <tfoot class="shadow-top h-[80px]">
           <tr class="bg-white border-b">
             <td colspan="6" class="px-6 py-4">
-              <div class="flex justify-end gap-4">
-                <Button
-                  class="regular bg-white text-[#2C59E5] w-[120px] h-[48px] rounded-[8px] font-[500] text-[16px] border-[1px] border-[#2C59E5] hover:bg-[#2C59E5] hover:text-white hover:border-[#2C59E5] transition-all duration-200 ease-in-out"
-                  @click="router.push('/')"
-                >
-                  Kembali
-                </Button>
-                <Button
+              <div class="flex justify-self-end justify-end gap-4">
+                <OutlinedPrimaryButton
+                  class="w-[150px]"
+                  type="button"
+                  @click="$router.push('/')"
+                  label="Kembali"
+                />
+                <PrimaryButton
                   v-if="CartStore.cart.length > 0"
-                  class="regular bg-[#2C59E5] text-white w-[120px] h-[48px] rounded-[8px] font-[500] text-[16px] border-[1px] border-[#2C59E5] hover:bg-blue-800 hover:text-white hover:border-[#2C59E5] transition-all duration-200 ease-in-out"
+                  class="w-[150px]"
+                  type="button"
+                  label="Bayar"
                   @click="bayar"
-                >
-                  Bayar
-                </Button>
+                />
               </div>
             </td>
           </tr>
@@ -102,9 +90,11 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useCartStore } from "@/stores/cart.store.js";
 import { formatRupiah } from "@/utils/formatRupiah";
-import { PlusIcon, MinusIcon } from "@heroicons/vue/24/solid";
 import ConfirmDeleteModal from "@/utils/components/deleteModal.vue";
 import Swal from "sweetalert2";
+import QtyCounter from "@/utils/components/qtyCounter.vue";
+import OutlinedPrimaryButton from "@/utils/components/buttons/outlinedPrimaryButton.vue";
+import PrimaryButton from "@/utils/components/buttons/primaryButton.vue";
 
 // Stores & Router
 const CartStore = useCartStore();
