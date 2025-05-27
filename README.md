@@ -1,9 +1,12 @@
+# Deployed Build
+
+https://masposibnu.netlify.app/
+
 # Vue 3 Setup
 
 This template should help get you started developing with Vue 3 in Vite.
 
 If you need a backend, check this out [express-setup-v2](https://gitlab.com/mtaufiikh/express-setup-v2).
-
 
 ## Official Documentation
 
@@ -30,8 +33,6 @@ npm run dev
 ```sh
 npm run build
 ```
-
-
 
 #### Enjoy coding
 
