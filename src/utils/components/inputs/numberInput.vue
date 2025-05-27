@@ -1,21 +1,16 @@
 <template>
   <div>
-    <label class="block text-sm font-medium text-gray-700 mb-1">
+    <label class="regular block text-sm font-medium text-gray-700 mb-1">
       {{ label }}
     </label>
     <input
-      type="text"
+      type="number"
+      :placeholder="placeholder"
       :value="modelValue"
       @input="onInput"
-      :placeholder="placeholder"
-      :class="[
-        'w-full px-3 py-2 border rounded-md bg-[#F5F5F5] focus:outline-none focus:ring-1 focus:ring-blue-500',
-        error ? 'border-red-500' : 'border-gray-800',
-      ]"
+      class="regular w-full px-3 py-2 border border-gray-700 bg-[#FCFCFC] rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
     />
-    <span v-if="error" class="text-red-500 text-sm">
-      {{ error }}
-    </span>
+    <p v-if="error" class="text-red-500 text-xs mt-1">{{ error }}</p>
   </div>
 </template>
 
@@ -43,6 +38,7 @@ const emit = defineEmits(["update:modelValue"]);
 
 const onInput = (event) => {
   let value = event.target.value;
-  emit("update:modelValue", value);
+
+  emit("update:modelValue", parseInt(value));
 };
 </script>
