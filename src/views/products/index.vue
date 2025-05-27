@@ -31,6 +31,7 @@
 
           <AddButton
             v-if="!CartStore.cart.find((cart) => cart.id === product.id)"
+            class="w-full"
             @click="addToCart(product)"
             label="Keranjang"
           />

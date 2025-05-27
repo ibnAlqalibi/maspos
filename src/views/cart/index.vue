@@ -87,7 +87,6 @@
 </template>
 <script setup>
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import { useCartStore } from "@/stores/cart.store.js";
 import { formatRupiah } from "@/utils/formatRupiah";
 import ConfirmDeleteModal from "@/utils/components/deleteModal.vue";
@@ -98,7 +97,6 @@ import PrimaryButton from "@/utils/components/buttons/primaryButton.vue";
 
 // Stores & Router
 const CartStore = useCartStore();
-const router = useRouter();
 
 // State
 const showConfirm = ref(false);

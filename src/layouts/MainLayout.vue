@@ -16,23 +16,16 @@
 
           <!-- Action Buttons and Profile -->
           <div class="flex items-center space-x-4">
-            <!-- Add Category Button -->
-            <button
-              class="hidden md:flex h-[48px] items-center justify-center gap-1 px-4 py-2 bg-[#2C59E5] text-white rounded-lg text-[16px]"
+            <AddButton
+              class="h-[48px]"
+              label="Tambah Kategori"
               @click="router.push('/category/create')"
-            >
-              <PlusIcon class="w-[16px] h-[16px] text-white" />
-              Tambah Kategori
-            </button>
-
-            <!-- Add Product Button -->
-            <button
-              class="hidden md:flex h-[48px] items-center justify-center gap-1 px-4 py-2 bg-[#2C59E5] text-white rounded-lg text-[16px]"
+            />
+            <AddButton
+              class="h-[48px]"
+              label="Tambah Produk"
               @click="router.push('/products/create')"
-            >
-              <PlusIcon class="w-[16px] h-[16px] text-white" />
-              Tambah Produk
-            </button>
+            />
 
             <!-- Cart -->
             <div
@@ -121,9 +114,9 @@ import { useRouter, useRoute } from "vue-router";
 import { useCartStore } from "@/stores/cart.store.js";
 import { useAuthStore } from "@/stores/auth.store.js";
 import CatComponent from "@/views/categories/index.vue";
-import { PlusIcon } from "@heroicons/vue/24/solid";
 import { ShoppingCartIcon } from "@heroicons/vue/24/outline";
 import logo from "@/assets/pfp.jpg";
+import AddButton from "@/utils/components/buttons/addButton.vue";
 
 // Routing
 const router = useRouter();
