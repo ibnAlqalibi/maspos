@@ -8,8 +8,8 @@
       <form action="" @submit.prevent="create">
         <div class="p-[24px]">
           <TextInput
-            :formData="formData"
-            :errors="errors"
+            v-model="formData.name"
+            :error="errors.name"
             label="Nama Kategori"
             placeholder="Masukkan nama kategori"
           />
